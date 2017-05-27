@@ -1,6 +1,17 @@
+var glob = require('glob');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
+var getEntry = function() {
+	var entryFiles = [];
+	glob.sync("./src/js/**/*.js") .forEach(function(jsPath) {
+		entryFiles.push(jsPath);
+	});
+	return entryFiles;
+};
+
 module.exports = {
     entry: {
-		"main": __dirname + "/src/main.js"
+		"main": getEntry()
 	},
     output: {
         path: __dirname + "/dist",
@@ -18,31 +29,13 @@ module.exports = {
                 test: /\.css$/,
                 loader: 'css-loader'
             }
-        ],
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'jshint-loader',
-                options: {
-                    camelcase: true,
-                    bitwise: true,
-                    curly: true,
-                    esversion: 6,
-                    funcscope: false,
-                    indent: 4,
-                    maxdepth: 10,
-                    nonbsp: true,
-                    undef: true,
-                    unused: true,
-                    lastsemic: true,
-                    devel:true,
-                    evil: true,
-                    validthis: true,
-                    browser: true,
-					loopfunc: true
-                }
-            }
         ]
-    }
+    },
+	plugins: [
+		new CopyWebpackPlugin([
+			{from: __dirname + '/src/css/wp_icons.png', to: __dirname + '/dist/css'},
+			{from: __dirname + '/src/css/wp_icons_light.png', to: __dirname + '/dist/css'}
+		])		
+	]
+	
 };
