@@ -3,6 +3,7 @@
     padding: 0;
     color: #31b6e7;
     background: #292829;
+	z-index:9991;
 }
 .android-ics .dw .dwwc,
 .android-ics .dw .dwwl,
